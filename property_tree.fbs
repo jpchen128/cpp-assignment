@@ -1,0 +1,20 @@
+namespace PropertyTree;
+
+enum ValueType : byte {
+  String,
+  Int,
+  Float,
+  Bool,
+  Subprops,
+}
+
+table Property {
+  timestamp: ulong;
+  deleted: bool;
+  name: string;
+  value: string;
+  type: ValueType;
+  sub_properties: [Property];
+}
+
+root_type Property;
