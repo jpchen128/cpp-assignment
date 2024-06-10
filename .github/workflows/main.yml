@@ -14,21 +14,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y pkg-config zip g++ zlib1g-dev unzip python3
 
-    - name: Install vcpkg
+    - name: Install vcpkg and packages
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         ./vcpkg/bootstrap-vcpkg.sh
         ./vcpkg/vcpkg integrate install
-
-    - name: Install C++ libraries with vcpkg
-      run: |
         ./vcpkg/vcpkg install flatbuffers boost-asio
 
-    - name: Create build directory
-      run: mkdir build && cd build
-
-    - name: Configure CMake project
-      run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake .. -G Ninja
-
-    - name: Build with Ninja
-      run: ninja
+    - name: Build the project with CMake and Ninja
+      run: |
+        mkdir build && cd build
+        cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake .. -G Ninja
+        ninja
